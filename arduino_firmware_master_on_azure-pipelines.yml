@@ -1,0 +1,52 @@
+pool:
+  vmImage: 'ubuntu-latest'
+
+trigger:
+- refs/tags/*
+
+steps:
+- task: ArduinoCliInstall@0
+  inputs:
+    version: 'latest'
+
+- task: ArduinoCliCoreUpdateIndex@0
+
+- task: ArduinoCliCoreInstall@0
+  inputs:
+    core: 'arduino:avr'
+
+- task: ArduinoCliLibdateIndex@0
+
+- task: ArduinoCliLibInstall@0
+  inputs:
+    lib: 'OneWire@2.3.5'
+
+- task: ArduinoCliLibInstall@0
+  inputs:
+    lib: 'DallasTemperature@3.8.0'
+
+- task: ArduinoCliLibInstall@0
+  inputs:
+    lib: 'DHT sensor library@1.3.8'
+
+- task: ArduinoCliLibInstall@0
+  inputs:
+    lib: 'CmdParser@1.6.0'
+
+- task: ArduinoCliBuild@0
+  inputs:
+    fqbn: 'arduino:avr:uno'
+    sketchDir: '$(System.DefaultWorkingDirectory)/ArduinoSerial/Main.ino'
+
+- task: CopyFiles@2
+  inputs:
+    Contents: '**/ArduinoSerial/*.hex'
+    TargetFolder: '$(build.artifactstagingdirectory)/arduinoserial'
+    CleanTargetFolder: true
+    flattenFolders: true
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(build.artifactstagingdirectory)/arduinoserial'
+    artifact: 'ArduinoSerial-Firmware'
+    publishLocation: 'pipeline'
