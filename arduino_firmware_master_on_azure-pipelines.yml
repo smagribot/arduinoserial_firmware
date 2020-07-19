@@ -36,14 +36,22 @@ steps:
 - task: ArduinoCliBuild@0
   inputs:
     fqbn: 'arduino:avr:uno'
-    sketchDir: '$(System.DefaultWorkingDirectory)/ArduinoSerial/Main.ino'
+    sketchDir: '$(System.DefaultWorkingDirectory)/Main/'
 
 - task: CopyFiles@2
   inputs:
-    Contents: '**/ArduinoSerial/*.hex'
+    SourceFolder: '$(System.DefaultWorkingDirectory)/Main/build/arduino.avr.uno/'
+    Contents: '*.hex'
     TargetFolder: '$(build.artifactstagingdirectory)/arduinoserial'
     CleanTargetFolder: true
     flattenFolders: true
+
+- task: CmdLine@2
+  displayName: 'Rename .hex files'
+  inputs:
+    script: |
+      mv $(build.artifactstagingdirectory)/arduinoserial/Main.ino.hex $(build.artifactstagingdirectory)/arduinoserial/Main.ino.arduino.avr.uno.hex
+      mv $(build.artifactstagingdirectory)/arduinoserial/Main.ino.with_bootloader.hex $(build.artifactstagingdirectory)/arduinoserial/Main.ino.arduino.avr.uno.with_bootloader.hex
 
 - task: PublishPipelineArtifact@1
   inputs:
