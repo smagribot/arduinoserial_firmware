@@ -7,15 +7,15 @@
 
 // Pwm set and rpm calculation from: https://forum.arduino.cc/index.php?topic=155089.msg1175321#msg1175321
 
-#define Firmware "0.0.1"
+#define Firmware "0.0.2"
 
-uint8_t pwmFanPin       = 3; // digital PWM pin 9
-uint8_t pwmFanReadPin   = 2;
+// uint8_t pwmFanPin       = 3; // digital PWM pin 9
+// uint8_t pwmFanReadPin   = 2;
 uint8_t fillPin         = 4; // must be INPUT_PULLUP compatible
 uint8_t dhtPin          = 5; // DHT11 or DHT22
 uint8_t waterTempPin    = 6; // DS18B20
-uint8_t relay0          = 7;
-uint8_t relay1          = 8;
+uint8_t relay0          = 2;
+uint8_t relay1          = 3;
 
 #define DHTTYPE DHT22
 
@@ -46,15 +46,15 @@ String relayStatus;
 
 void setupPwmFan() {
     // generate 25kHz PWM pulse rate on Pin 3
-    pinMode(pwmFanPin, OUTPUT);   // OCR2B sets duty cycle
-    // Set up Fast PWM on Pin 3
-    TCCR2A = 0x23; // _BV(COM2B1) | _BV(WGM21) | _BV(WGM20);?      // COM2B1, WGM21, WGM20 
-    // Set prescaler  
-    TCCR2B = 0x0A; // _BV(WGM21);?   // WGM21, Prescaler = /8
-    // Set TOP and initialize duty cycle to zero(0)
-    OCR2A = 79;    // TOP DO NOT CHANGE, SETS PWM PULSE RATE
-    OCR2B = 0;    // duty cycle for Pin 3 (0-79) generates 1 500nS pulse even when 0 :
-    digitalWrite(pwmFanReadPin, HIGH);   // Starts reading
+    // pinMode(pwmFanPin, OUTPUT);   // OCR2B sets duty cycle
+    // // Set up Fast PWM on Pin 3
+    // TCCR2A = 0x23; // _BV(COM2B1) | _BV(WGM21) | _BV(WGM20);?      // COM2B1, WGM21, WGM20 
+    // // Set prescaler  
+    // TCCR2B = 0x0A; // _BV(WGM21);?   // WGM21, Prescaler = /8
+    // // Set TOP and initialize duty cycle to zero(0)
+    // OCR2A = 79;    // TOP DO NOT CHANGE, SETS PWM PULSE RATE
+    // OCR2B = 0;    // duty cycle for Pin 3 (0-79) generates 1 500nS pulse even when 0 :
+    // digitalWrite(pwmFanReadPin, HIGH);   // Starts reading
 }
 
 void setupRelay() {
@@ -69,13 +69,13 @@ void getFirmware(CmdParser *myParser) {
 }
 
 void setFanSpeed(CmdParser *myParser) {
-    setFandSpeedString = myParser->getCmdParam(1);
-    setFandSpeed = setFandSpeedString.toInt();
-    if (setFandSpeed > 0 && setFandSpeed < 80) {
-        OCR2B = setFandSpeed;
-        Serial.println("OK");
-        return;
-    }
+    // setFandSpeedString = myParser->getCmdParam(1);
+    // setFandSpeed = setFandSpeedString.toInt();
+    // if (setFandSpeed > 0 && setFandSpeed < 80) {
+    //     OCR2B = setFandSpeed;
+    //     Serial.println("OK");
+    //     return;
+    // }
 
     Serial.println("ERROR");
 }
@@ -83,14 +83,14 @@ void setFanSpeed(CmdParser *myParser) {
 void getFanSpeed(CmdParser *myParser) {
     // time = pulseIn(pwmFanReadPin, HIGH);
     // rpm = (1000000 * 60) / (time * 4);
-    time = pulseIn(pwmFanReadPin, HIGH);     //  measure HIGH part of the pulse
-    time += pulseIn(pwmFanReadPin, LOW);    //  add in the LOW part of another pulse
-    rpm = (1000000 * 60) / (time * 2);    // calculate RPM based upon the fan generating two pulses/rev
-    stringRPM = String(rpm);
-    if (stringRPM.length() < 5) {
-        Serial.println(rpm, DEC);
-        return;
-    }
+    // time = pulseIn(pwmFanReadPin, HIGH);     //  measure HIGH part of the pulse
+    // time += pulseIn(pwmFanReadPin, LOW);    //  add in the LOW part of another pulse
+    // rpm = (1000000 * 60) / (time * 2);    // calculate RPM based upon the fan generating two pulses/rev
+    // stringRPM = String(rpm);
+    // if (stringRPM.length() < 5) {
+    //     Serial.println(rpm, DEC);
+    //     return;
+    // }
     Serial.println("ERROR");
 }
 
