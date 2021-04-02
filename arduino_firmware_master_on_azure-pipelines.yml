@@ -5,9 +5,9 @@ trigger:
 - refs/tags/*
 
 steps:
-- task: ArduinoCliInstall@0
+- task: ArduinoCliInstall@1
   inputs:
-    version: 'latest'
+    version: '0.9.0'
 
 - task: ArduinoCliCoreUpdateIndex@0
 
