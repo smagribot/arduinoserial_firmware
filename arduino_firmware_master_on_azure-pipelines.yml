@@ -33,6 +33,18 @@ steps:
   inputs:
     lib: 'CmdParser@1.6.0'
 
+- task: ArduinoCliLibInstall@0
+  inputs:
+    lib: 'Adafruit Motor Shield library@1.0.1'
+
+- task: ArduinoCliLibInstall@0
+  inputs:
+    lib: 'SparkFun APDS9960 RGB and Gesture Sensor@1.4.2'
+
+- task: ArduinoCliLibInstall@0
+  inputs:
+    lib: 'SparkFun CCS811 Arduino Library@2.0.1'
+
 - task: ArduinoCliBuild@0
   inputs:
     fqbn: 'arduino:avr:uno'
