@@ -17,7 +17,7 @@
 #include <CmdCallback.hpp>
 #include <CmdParser.hpp>
 
-#define Firmware "0.0.3"
+#define Firmware "0.0.4"
 
 static const uint8_t fillPin = 2;
 // static const uint8_t pwmFanReadPin   = 2;
